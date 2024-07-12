@@ -1,7 +1,8 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
 import Router from "./Router";
-import React from "react";
+import React, { useState } from "react";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { DarkTheme, LightTheme } from "./theme";
 
 const GlobalStyle = createGlobalStyle` 
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,500;1,500&display=swap');
@@ -56,8 +57,6 @@ table {
   * {
     box-sizing: border-box;
   }
-
-
   
   body {
     font-family: 'Noto Sans';
@@ -72,12 +71,15 @@ table {
 `;
 
 function App() {
+  const [isDark, setIsDark] = useState(false);
+  const toggleTheme = () => setIsDark((prev) => !prev);
+
   return (
-    <>
+    <ThemeProvider theme={isDark ? DarkTheme : LightTheme}>
       <GlobalStyle />
+      <button onClick={toggleTheme}>Toggle Dark Mode</button>
       <Router />
-      <ReactQueryDevtools initialIsOpen={true} />
-    </>
+    </ThemeProvider>
   );
 }
 
