@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { fetchCoinHistory } from "../api";
 import { useOutletContext } from "react-router-dom";
@@ -29,6 +29,17 @@ function Chart({ isDark }: IChartProps) {
   const { isLoading, data } = useQuery<IHistorical[]>(["ohlcv", coinId], () =>
     fetchCoinHistory(coinId)
   );
+  const [opstions, setOptions] = useState<ApexCharts.ApexOptions>({
+    theme: { mode: "light" },
+    chart: { width: 500, height: 500 },
+  });
+
+  useEffect(() => {
+    setOptions((prevOptions) => ({
+      ...prevOptions,
+      theme: { mode: isDark ? "dark" : "light" },
+    }));
+  }, [isDark]);
 
   return (
     <div>
@@ -40,10 +51,7 @@ function Chart({ isDark }: IChartProps) {
             data: [1, 2, 3, 4, 5, 6],
           },
         ]}
-        options={{
-          theme: { mode: isDark ? "dark" : "light" },
-          chart: { width: 500, height: 500 },
-        }}
+        options={opstions}
       />
     </div>
   );

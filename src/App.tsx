@@ -92,7 +92,7 @@ function App() {
       <Toggle onClick={toggleTheme}>
         {isDark ? "Light Mode" : "Dark Mode"}
       </Toggle>
-      <Router />
+      <Router isDark={isDark} />
       <ReactQueryDevtools initialIsOpen={false} />
     </ThemeProvider>
   );
