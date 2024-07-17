@@ -4,11 +4,13 @@ import { Link, useMatch } from "react-router-dom";
 import { Outlet, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
+import { Helmet } from "react-helmet";
 
 const Container = styled.div`
   padding: 0px 20px;
   max-width: 480px;
   margin: 0 auto;
+  color: ${(props) => props.theme.textColor};
 `;
 
 const Header = styled.header`
@@ -37,10 +39,11 @@ const Overview = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.listColor};
   margin-top: 20px;
   padding: 10px 20px;
   border-radius: 10px;
+  border: 3px solid ${(props) => props.theme.listBorder};
 `;
 
 const OverviewItem = styled.div`
@@ -68,9 +71,30 @@ interface Info {
   name: string;
 }
 
+interface Quotes {
+  price: number;
+  volume_24h: number;
+  volume_24h_change_24h: number;
+  market_cap: number;
+  market_cap_change_24h: number;
+  percent_change_15m: number;
+  percent_change_30m: number;
+  percent_change_1h: number;
+  percent_change_6h: number;
+  percent_change_12h: number;
+  percent_change_24h: number;
+  percent_change_7d: number;
+  percent_change_30d: number;
+  percent_change_1y: number;
+  ath_price: number;
+  ath_date: string;
+  percent_from_price_ath: number;
+}
+
 interface PriceInfo {
   total_supply: number;
   max_supply: number;
+  quotes: { USD: Quotes };
 }
 
 const Tabs = styled.div`
@@ -85,9 +109,10 @@ const Tab = styled.span<{ isActive: boolean }>`
   text-transform: uppercase;
   font-size: 12px;
   font-weight: 400;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.listColor};
   padding: 8px 0px;
   border-radius: 10px;
+  border: 3px solid ${(props) => props.theme.listBorder};
   color: ${(props) =>
     props.isActive ? props.theme.accentColor : props.theme.textColor};
   a {
@@ -95,7 +120,11 @@ const Tab = styled.span<{ isActive: boolean }>`
   }
 `;
 
-function Coin() {
+interface ICoinProps {
+  isDark: boolean;
+}
+
+function Coin({ isDark }: ICoinProps) {
   const { coinId } = useParams() as { coinId: string };
   const { state } = useLocation() as { state: { name: string } };
 
@@ -128,13 +157,19 @@ function Coin() {
   );
   const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceInfo>(
     ["tickers", coinId],
-    () => fetchCoinTickers(coinId)
+    () => fetchCoinTickers(coinId),
+    { refetchInterval: 5000 }
   );
 
   const loading = infoLoading || tickersLoading;
 
   return (
     <Container>
+      <Helmet>
+        <title>
+          {state?.name || (loading ? "Loading..." : infoData?.name)}
+        </title>
+      </Helmet>
       <Header>
         <Title>
           {state?.name || (loading ? "Loading..." : infoData?.name)}
@@ -151,11 +186,11 @@ function Coin() {
             </OverviewItem>
             <OverviewItem>
               <span>Symbol:</span>
-              <span>${infoData?.symbol}</span>
+              <span>{infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Open Source:</span>
-              <span>{infoData?.open_source ? "Yes" : "No"}</span>
+              <span>Price:</span>
+              <span>{`$${tickersData?.quotes.USD.price.toFixed(2)}`}</span>
             </OverviewItem>
           </Overview>
           <Description>{infoData?.description}</Description>
@@ -182,7 +217,7 @@ function Coin() {
             </Tab>
           </Tabs>
 
-          <Outlet />
+          <Outlet context={coinId} />
         </>
       )}
     </Container>

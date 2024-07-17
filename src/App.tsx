@@ -1,8 +1,8 @@
-import { createGlobalStyle, ThemeProvider } from "styled-components";
+import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import Router from "./Router";
 import React, { useState } from "react";
-import { ReactQueryDevtools } from "react-query/devtools";
 import { DarkTheme, LightTheme } from "./theme";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 const GlobalStyle = createGlobalStyle` 
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,500;1,500&display=swap');
@@ -68,6 +68,18 @@ table {
     text-decoration: none;
     color: inherit;
   }
+
+  button {
+    
+  }
+`;
+
+const Toggle = styled.button`
+  background-color: ${(props) => props.theme.bgColor};
+  border: 1px solid ${(props) => props.theme.listColor};
+  color: ${(props) => props.theme.listBorder};
+  margin-left: auto;
+  display: block;
 `;
 
 function App() {
@@ -77,8 +89,11 @@ function App() {
   return (
     <ThemeProvider theme={isDark ? DarkTheme : LightTheme}>
       <GlobalStyle />
-      <button onClick={toggleTheme}>Toggle Dark Mode</button>
+      <Toggle onClick={toggleTheme}>
+        {isDark ? "Light Mode" : "Dark Mode"}
+      </Toggle>
       <Router />
+      <ReactQueryDevtools initialIsOpen={false} />
     </ThemeProvider>
   );
 }

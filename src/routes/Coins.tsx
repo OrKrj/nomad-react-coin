@@ -3,6 +3,8 @@ import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
+import defaultCoinImg from "../icons/ crypto_currency.png";
+import { Helmet } from "react-helmet";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -28,8 +30,9 @@ const CoinList = styled.ul`
 `;
 
 const Coin = styled.li`
-  background-color: white;
+  background-color: ${(props) => props.theme.listColor};
   color: ${(props) => props.theme.bgColor};
+  border: 2px solid ${(props) => props.theme.listBorder};
   padding: 20px;
   margin-bottom: 12px;
   border-radius: 15px;
@@ -38,6 +41,7 @@ const Coin = styled.li`
     display: flex;
     align-items: center;
     transition: color 0.2s ease-in;
+    color: ${(props) => props.theme.textColor};
   }
   &:hover {
     a {
@@ -89,6 +93,9 @@ function Coins() {
 
   return (
     <Container>
+      <Helmet>
+        <title>코인</title>
+      </Helmet>
       <Header>
         <Title>코인</Title>
       </Header>
@@ -101,8 +108,11 @@ function Coins() {
               <Link to={`/${coin.id}`} state={{ name: coin.name }}>
                 <Img
                   src={`https://cryptoicon-api.pages.dev/api/icon/${coin.symbol.toLowerCase()}`}
+                  onError={(e) => {
+                    e.currentTarget.src = defaultCoinImg;
+                  }}
                 />
-                {coin.name} &rarr;
+                {coin.name} 🚀
               </Link>
             </Coin>
           ))}
