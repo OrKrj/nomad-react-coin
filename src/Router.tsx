@@ -14,7 +14,7 @@ function Router({ isDark }: IRouterProps) {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Coins />} />
-        <Route path="/:coinId" element={<Coin isDark={isDark} />}>
+        <Route path="/:coinId" element={<Coin />}>
           <Route path="price" element={<Price />} />
           <Route path="chart" element={<Chart isDark={isDark} />} />
         </Route>

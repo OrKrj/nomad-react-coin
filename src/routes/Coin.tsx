@@ -120,11 +120,7 @@ const Tab = styled.span<{ isActive: boolean }>`
   }
 `;
 
-interface ICoinProps {
-  isDark: boolean;
-}
-
-function Coin({ isDark }: ICoinProps) {
+function Coin() {
   const { coinId } = useParams() as { coinId: string };
   const { state } = useLocation() as { state: { name: string } };
 
