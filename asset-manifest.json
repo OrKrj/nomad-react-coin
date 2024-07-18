@@ -1,19 +1,20 @@
 {
   "files": {
-    "main.js": "/nomad-react-coin/static/js/main.b2ac30b7.chunk.js",
-    "main.js.map": "/nomad-react-coin/static/js/main.b2ac30b7.chunk.js.map",
-    "runtime-main.js": "/nomad-react-coin/static/js/runtime-main.02456c07.js",
-    "runtime-main.js.map": "/nomad-react-coin/static/js/runtime-main.02456c07.js.map",
-    "static/js/2.bb578d8f.chunk.js": "/nomad-react-coin/static/js/2.bb578d8f.chunk.js",
-    "static/js/2.bb578d8f.chunk.js.map": "/nomad-react-coin/static/js/2.bb578d8f.chunk.js.map",
-    "index.html": "/nomad-react-coin/index.html",
-    "precache-manifest.a727c3bf34fe06f63c3404644c88cf76.js": "/nomad-react-coin/precache-manifest.a727c3bf34fe06f63c3404644c88cf76.js",
-    "service-worker.js": "/nomad-react-coin/service-worker.js",
-    "static/js/2.bb578d8f.chunk.js.LICENSE.txt": "/nomad-react-coin/static/js/2.bb578d8f.chunk.js.LICENSE.txt"
+    "main.js": "/react-coin/static/js/main.10012578.chunk.js",
+    "main.js.map": "/react-coin/static/js/main.10012578.chunk.js.map",
+    "runtime-main.js": "/react-coin/static/js/runtime-main.38043cb1.js",
+    "runtime-main.js.map": "/react-coin/static/js/runtime-main.38043cb1.js.map",
+    "static/js/2.8c27e57a.chunk.js": "/react-coin/static/js/2.8c27e57a.chunk.js",
+    "static/js/2.8c27e57a.chunk.js.map": "/react-coin/static/js/2.8c27e57a.chunk.js.map",
+    "index.html": "/react-coin/index.html",
+    "precache-manifest.f7c61b59937d74d3917a170bccea11b0.js": "/react-coin/precache-manifest.f7c61b59937d74d3917a170bccea11b0.js",
+    "service-worker.js": "/react-coin/service-worker.js",
+    "static/js/2.8c27e57a.chunk.js.LICENSE.txt": "/react-coin/static/js/2.8c27e57a.chunk.js.LICENSE.txt",
+    "static/media/ crypto_currency.png": "/react-coin/static/media/ crypto_currency.9df1c83f.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.02456c07.js",
-    "static/js/2.bb578d8f.chunk.js",
-    "static/js/main.b2ac30b7.chunk.js"
+    "static/js/runtime-main.38043cb1.js",
+    "static/js/2.8c27e57a.chunk.js",
+    "static/js/main.10012578.chunk.js"
   ]
 }
