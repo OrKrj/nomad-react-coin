@@ -11,7 +11,7 @@ interface IRouterProps {
 
 function Router({ isDark }: IRouterProps) {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Routes>
         <Route path="/" element={<Coins />} />
         <Route path="/:coinId" element={<Coin isDark={isDark} />}>
