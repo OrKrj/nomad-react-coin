@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { fetchCoinHistory } from "../api";
 import { useOutletContext } from "react-router-dom";
-import ApexChart from "react-apexcharts";
+import { fetchCoinHistory } from "../api";
+import ReactApexChart from "react-apexcharts";
 
-interface IChartContext {
+interface IPriceContext {
   coinId: string;
   isDark: boolean;
 }
@@ -20,90 +20,89 @@ interface IHistorical {
   market_cap: number;
 }
 
+interface IData {
+  x: string | Date;
+  y: [number, number, number, number];
+}
+
+interface ISeries {
+  name: string;
+  data: IData[];
+}
+
 function Chart() {
-  const { coinId, isDark } = useOutletContext<IChartContext>();
-  const { isLoading, data } = useQuery<IHistorical[]>(["ohlcv", coinId], () =>
+  const { coinId, isDark } = useOutletContext<IPriceContext>();
+  const { isLoading, data } = useQuery<IHistorical[]>(["ohlc", coinId], () =>
     fetchCoinHistory(coinId)
   );
-  const [options, setOptions] = useState<ApexCharts.ApexOptions>({
+
+  const [options, setoptions] = useState<ApexCharts.ApexOptions>({
     theme: { mode: "light" },
     chart: {
-      width: 500,
-      height: 500,
+      type: "candlestick",
+      background: "#f3f3f3",
       toolbar: {
         show: false,
       },
-      background: "transparent",
-    },
-    grid: { row: { colors: ["#f3f3f3", "transparent"], opacity: 0.7 } },
-    stroke: {
-      curve: "straight",
-      width: 4,
-    },
-    yaxis: {
-      show: false,
     },
     xaxis: {
-      axisBorder: { show: false },
-      axisTicks: { show: false },
-      labels: { show: false },
       type: "datetime",
-      categories: [],
     },
-    fill: {
-      type: "gradient",
-      gradient: { gradientToColors: ["#0be881"], stops: [0, 50] },
+    yaxis: {
+      tooltip: {
+        enabled: false,
+      },
+      show: false,
     },
   });
 
   useEffect(() => {
-    if (data) {
-      setOptions((prevOptions) => ({
-        ...prevOptions,
-        xaxis: {
-          ...prevOptions.xaxis,
-          categories: data.map((price) =>
-            new Date(price.time_close * 1000).toISOString()
-          ),
-        },
-        series: [
-          {
-            name: "$",
-            data: data.map((price) => Number(price.close)),
-          },
-        ],
-      }));
-    }
-  }, [data]);
-
-  useEffect(() => {
-    setOptions((prevOptions) => ({
+    setoptions((prevOptions) => ({
       ...prevOptions,
-      theme: { mode: isDark ? "dark" : "light" },
-      grid: {
-        row: isDark
-          ? { colors: ["#2C3A47", "transparent"], opacity: 0.5 }
-          : { colors: ["#f3f3f3", "transparent"], opacity: 0.7 },
+      chart: {
+        background: isDark ? "#2f3640" : "#f3f3f3",
+        toolbar: { show: false },
       },
+      theme: { mode: isDark ? "dark" : "light" },
     }));
   }, [isDark]);
 
-  console.log(isDark);
+  const [series, setSeries] = useState<ISeries[]>([
+    {
+      name: "price",
+      data: [],
+    },
+  ]);
+
+  useEffect(() => {
+    if (data) {
+      setSeries([
+        {
+          name: "price",
+          data: data?.map((price) => ({
+            x: new Date(price.time_close * 1000).toISOString(),
+            y: [
+              parseFloat(price.open),
+              parseFloat(price.high),
+              parseFloat(price.low),
+              parseFloat(price.close),
+            ],
+          })),
+        },
+      ]);
+    }
+  }, [data]);
 
   return (
     <div>
       {isLoading ? (
-        <span>Loading...</span>
+        <span>"Loading..."</span>
       ) : (
-        <ApexChart
-          type="line"
-          series={[
-            {
-              name: "$",
-              data: data?.map((price) => Number(price.close)) as number[],
-            },
-          ]}
+        <ReactApexChart
+          series={series}
           options={options}
+          type="candlestick"
+          height={300}
         />
       )}
     </div>
