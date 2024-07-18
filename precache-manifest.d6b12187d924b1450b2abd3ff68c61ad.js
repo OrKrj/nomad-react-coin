@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "c47116d4e67414c145f58bcbd978fe06",
+    "revision": "40802ffae6241895a5c4d1b70a0bbf67",
     "url": "/nomad-react-coin/index.html"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/nomad-react-coin/static/js/2.86418acb.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "19fafc3734e69b8468ff",
-    "url": "/nomad-react-coin/static/js/main.90a2309a.chunk.js"
+    "revision": "324d38d6168129307043",
+    "url": "/nomad-react-coin/static/js/main.80162b82.chunk.js"
   },
   {
     "revision": "993d629a972f661ca65b",
