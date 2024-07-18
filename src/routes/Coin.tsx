@@ -100,7 +100,7 @@ interface PriceInfo {
 const Tabs = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  margin: 25px 0px;
+  margin-top: 25px;
   gap: 10px;
 `;
 
@@ -153,8 +153,8 @@ function Coin() {
   );
   const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceInfo>(
     ["tickers", coinId],
-    () => fetchCoinTickers(coinId),
-    { refetchInterval: 5000 }
+    () => fetchCoinTickers(coinId)
+    // { refetchInterval: 5000 }
   );
 
   const loading = infoLoading || tickersLoading;
@@ -213,7 +213,7 @@ function Coin() {
             </Tab>
           </Tabs>
 
-          <Outlet context={coinId} />
+          <Outlet context={{ coinId }} />
         </>
       )}
     </Container>
