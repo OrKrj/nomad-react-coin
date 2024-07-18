@@ -59,7 +59,10 @@ function Price() {
   useEffect(() => {
     setoptions((prevOptions) => ({
       ...prevOptions,
-      chart: { background: isDark ? "#2f3640" : "#f3f3f3" },
+      chart: {
+        background: isDark ? "#2f3640" : "#f3f3f3",
+        toolbar: { show: false },
+      },
       theme: { mode: isDark ? "dark" : "light" },
     }));
   }, [isDark]);
