@@ -4,8 +4,9 @@ import { fetchCoinHistory } from "../api";
 import { useOutletContext } from "react-router-dom";
 import ApexChart from "react-apexcharts";
 
-interface ICoinId {
+interface IChartContext {
   coinId: string;
+  isDark: boolean;
 }
 
 interface IHistorical {
@@ -19,16 +20,12 @@ interface IHistorical {
   market_cap: number;
 }
 
-interface IChartProps {
-  isDark: boolean;
-}
-
-function Chart({ isDark }: IChartProps) {
-  const { coinId } = useOutletContext<ICoinId>();
+function Chart() {
+  const { coinId, isDark } = useOutletContext<IChartContext>();
   const { isLoading, data } = useQuery<IHistorical[]>(["ohlcv", coinId], () =>
     fetchCoinHistory(coinId)
   );
-  const [opstions, setOptions] = useState<ApexCharts.ApexOptions>({
+  const [options, setOptions] = useState<ApexCharts.ApexOptions>({
     theme: { mode: "light" },
     chart: {
       width: 500,
@@ -51,15 +48,33 @@ function Chart({ isDark }: IChartProps) {
       axisTicks: { show: false },
       labels: { show: false },
       type: "datetime",
-      categories: data?.map((price) =>
-        new Date(price.time_close * 1000).toISOString()
-      ),
+      categories: [],
     },
     fill: {
       type: "gradient",
       gradient: { gradientToColors: ["#0be881"], stops: [0, 50] },
     },
   });
+
+  useEffect(() => {
+    if (data) {
+      setOptions((prevOptions) => ({
+        ...prevOptions,
+        xaxis: {
+          ...prevOptions.xaxis,
+          categories: data.map((price) =>
+            new Date(price.time_close * 1000).toISOString()
+          ),
+        },
+        series: [
+          {
+            name: "$",
+            data: data.map((price) => Number(price.close)),
+          },
+        ],
+      }));
+    }
+  }, [data]);
 
   useEffect(() => {
     setOptions((prevOptions) => ({
@@ -73,18 +88,24 @@ function Chart({ isDark }: IChartProps) {
     }));
   }, [isDark]);
 
+  console.log(isDark);
+
   return (
     <div>
-      <ApexChart
-        type="line"
-        series={[
-          {
-            name: "$",
-            data: data?.map((price) => Number(price.close)) as number[],
-          },
-        ]}
-        options={opstions}
-      />
+      {isLoading ? (
+        <span>Loading...</span>
+      ) : (
+        <ApexChart
+          type="line"
+          series={[
+            {
+              name: "$",
+              data: data?.map((price) => Number(price.close)) as number[],
+            },
+          ]}
+          options={options}
+        />
+      )}
     </div>
   );
 }

@@ -120,7 +120,11 @@ const Tab = styled.span<{ isActive: boolean }>`
   }
 `;
 
-function Coin() {
+interface ICoinProps {
+  isDark: boolean;
+}
+
+function Coin({ isDark }: ICoinProps) {
   const { coinId } = useParams() as { coinId: string };
   const { state } = useLocation() as { state: { name: string } };
 
@@ -213,7 +217,7 @@ function Coin() {
             </Tab>
           </Tabs>
 
-          <Outlet context={{ coinId }} />
+          <Outlet context={{ coinId, isDark }} />
         </>
       )}
     </Container>
