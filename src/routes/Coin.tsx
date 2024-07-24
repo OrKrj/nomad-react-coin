@@ -120,36 +120,15 @@ const Tab = styled.span<{ isActive: boolean }>`
   }
 `;
 
-interface ICoinProps {
-  isDark: boolean;
-}
+interface ICoinProps {}
 
-function Coin({ isDark }: ICoinProps) {
+function Coin({}: ICoinProps) {
   const { coinId } = useParams() as { coinId: string };
   const { state } = useLocation() as { state: { name: string } };
 
   const chartMatch = useMatch("/:coinId/chart");
   const priceMatch = useMatch("/:coinId/price");
   const coinPageMatch = useMatch("/coin");
-
-  // const [loading, setLoading] = useState(true);
-  // const [info, setInfo] = useState<Info | null>(null);
-  // const [priceInfo, setPriceInfo] = useState<PriceInfo | null>(null);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const infoData = await (
-  //       await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
-  //     ).json();
-  //     const priceData = await (
-  //       await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
-  //     ).json();
-  //     setInfo(infoData);
-  //     setPriceInfo(priceData);
-  //     setLoading(false);
-  //   };
-  //   fetchData();
-  // }, [coinId]);
 
   const { isLoading: infoLoading, data: infoData } = useQuery<Info>(
     ["info", coinId],
@@ -217,7 +196,7 @@ function Coin({ isDark }: ICoinProps) {
             </Tab>
           </Tabs>
 
-          <Outlet context={{ coinId, isDark }} />
+          <Outlet context={{ coinId }} />
         </>
       )}
     </Container>
