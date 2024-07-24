@@ -74,25 +74,12 @@ table {
   }
 `;
 
-const Toggle = styled.button`
-  background-color: ${(props) => props.theme.bgColor};
-  border: 1px solid ${(props) => props.theme.listColor};
-  color: ${(props) => props.theme.listBorder};
-  margin-left: auto;
-  display: block;
-`;
-
 function App() {
-  const [isDark, setIsDark] = useState(false);
-  const toggleTheme = () => setIsDark((prev) => !prev);
-
   return (
-    <ThemeProvider theme={isDark ? DarkTheme : LightTheme}>
+    <ThemeProvider theme={DarkTheme}>
       <GlobalStyle />
-      <Toggle onClick={toggleTheme}>
-        {isDark ? "Light Mode" : "Dark Mode"}
-      </Toggle>
-      <Router isDark={isDark} />
+
+      <Router />
       <ReactQueryDevtools initialIsOpen={false} />
     </ThemeProvider>
   );
